@@ -4,7 +4,7 @@
 const pg = require('pg');
 const dbhandler = {};
 
-let dbcred = "postgres://morekptiiwaimg:ea31b397226cbc620a97a79c583ff20f10fab3ec2a70bf65f52514a85483c1f5@ec2-52-48-65-240.eu-west-1.compute.amazonaws.com:5432/d9vuo2najrmusl";
+let dbcred = "postgres://vhckwsfmrowqfi:aaf8e0d4362f013c8ca0fe2be43af2659837603b3846c0f237cdaae6970f955e@ec2-54-247-158-179.eu-west-1.compute.amazonaws.com:5432/dahq44dt2s0m5h"
     
 const pool = new pg.Pool({
     connectionString: dbcred,
