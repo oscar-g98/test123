@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <title>User create</title>
+</head>
+<body>
+
+    <h1>Create Your Account</h1>
+
+    <label for="inpEmail">Email: </label>
+    <input id="inpEmail" type="email" value="heihei@dabb.no"/>
+    <br>
+    <label for="inpPsw">Password: </label>
+    <input id="inpPsw" type="password" value="12345"/>
+    <br>
+    <button id="btnSend">Create account</button>
+
+   <p id="outtext"></p>
+    
+
+</body>
+
+<script>
+
+let url = "http://localhost:3000/users";
+
+
+let inpEmail = document.getElementById("inpEmail");
+let inpPsw = document.getElementById("inpPsw");
+let outtext = document.getElementById('outtext');
+let btnSend = document.getElementById("btnSend");
+
+btnSend.addEventListener("click", createUser);
+
+    async function createUser() {
+        
+        let updata = {
+            user_name: inpEmail.value,
+            password: inpPsw.value
+        };
+        
+        let cfg = {
+            method: "POST",
+            headers: {"content-type" : "application/json"},
+            body: JSON.stringify(updata)
+        }
+
+            let response = await fetch(url, cfg);
+            let data = await response.json();
+
+            console.log(data);
+
+        if (data === true) {
+            outtext.innerHTML = "User exists";
+        }else if (data === true){
+            location.href = "user_login.html";
+        }else {
+            outtext.innerHTML = "User is created";
+            location.href = "user_login.html";
+        }
+    };
+
+
+</script>
+
+</html>

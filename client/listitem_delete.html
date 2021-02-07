@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <title>Delete items</title>
+</head>
+
+<body>
+
+
+    <h1>Edit list</h1>
+    <h3>Listname:</h3>
+    <h2 id="listname">Listenavn</h2>
+    <button id="createitem">Create item</button>
+    <button id="logout">Logout</button>
+    <br>
+    <br>
+    <br>
+    <hr>
+    <div id="container"></div>
+    <br>
+    <br>
+
+
+</body>
+
+<script>
+
+    // ---------------------------------------    
+
+    let container = document.getElementById("container");
+    let createitem = document.getElementById("createitem");
+    let listname = document.getElementById("listname");
+    let logout = document.getElementById("logout");
+
+    listname.innerHTML = localStorage.getItem("listname");
+
+
+    logout.addEventListener("click", userLogout);
+
+    async function userLogout() {
+        location.href = "user_login.html";
+    }
+
+    createitem.addEventListener("click", newItem);
+    loadlistItems();
+    
+
+    //-----------------------------------------  
+
+    async function loadlistItems() {
+        let listid = localStorage.getItem("listid");
+        let url = "http://localhost:3000/list_item?listid="+listid;
+
+        container.innerHTML = "";
+        let response = await fetch(url);
+        let data = await response.json();
+
+        for(let item of data) {
+            let div = document.createElement("div");
+            let html = `
+            <h3>${item.item_name}</h3>    
+            `; // Her kan man skrive inn tekst
+
+            let btn = document.createElement("button");
+            btn.innerHTML = "Delete item";
+            let hr = document.createElement("hr");
+
+            div.innerHTML = html;
+            div.appendChild(btn);
+            div.appendChild(hr);
+            container.appendChild(div);
+
+            btn.addEventListener("click", function(){
+                del(item.id);
+            });
+        }
+    }
+
+    function newItem() {
+        location.href = "listitem_create.html";
+    } 
+
+    //----------------------------------------
+
+    async function del(itemid) {
+        let url = "http://localhost:3000/list_item";
+
+        let updata = {
+            id: itemid
+        }
+
+        let cfg = {
+            method: "DELETE",
+            headers: {"content-type" : "application/json"},
+            body: JSON.stringify(updata)
+        }
+
+        let response = await fetch(url, cfg);
+        let data = await response.json();
+
+        loadlistItems();
+        console.log(data);
+    }
+
+
+
+</script>
+
+</html>
